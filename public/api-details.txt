@@ -1,0 +1,55 @@
+https://suscel-backend.foobar.in/api/admin/dashboard
+{
+    "success": true,
+    "code": 200,
+    "message": "Record found successfully",
+    "data": {
+        "totalOrders": 0,
+        "newOrdersThisWeek": 0,
+        "totalUsers": 5,
+        "newUsersThisWeek": 5
+    }
+}
+ 
+https://suscel-backend.foobar.in/api/admin/users?page=1&limit=10
+{
+    "success": true,
+    "code": 200,
+    "message": "Record found successfully",
+    "data": {
+        "users": [  
+            {
+                "_id": "65a5287c526bfc3e04807c5e",
+                "email": "vivek.digimantra@gmail.com",
+                "name": "G-John",
+                "profilePrivacy": "private",
+                "verificationCode": null,
+                "verificationCodeCreatedAt": null,
+                "resetPasswordCode": null,
+                "resetPasswordCodeCreatedAt": null,
+                "isVerified": true,
+                "isProfileCompleted": true,
+                "platform": "android",
+                "deviceToken": "abcde",
+                "fcmToken": "co_pCZ_OSnKzhRdWPSSKYj:APA91bHF7ZbNrkT7wLJMKjg_tIGgINUm-WXoO7yhfAVRDxZKqcdcTjOk1yiV_us7vxecQBLvfSvyquJLQi21YYGuXSZVvlRPals7CNW_SqeJNZm45ZwgPHoPCAsfexqX7jirpFxIQM8u",
+                "notification": true,
+                "socialId": "116672323263629487760",
+                "stripeCustomerId": null,
+                "deleted": false,
+                "createdAt": "2024-01-15T12:43:40.589Z",
+                "updatedAt": "2024-01-16T04:36:54.878Z",
+                "__v": 0,
+                "bioDescription": "Rainbow",
+                "dob": "2020-01-17T12:44:00.000Z",
+                "profileImage": "https://dev-user-suscel.s3.amazonaws.com/eeb190d2-34e1-4930-a7fc-1e5852f8b99d.jpeg"
+            }
+        ],
+        "totalUsers": 5,
+        "currentPage": 1,
+        "totalPages": 1
+    }
+}
+https://suscel-backend.foobar.in/api/admin/orders?page=1&limit=10
+https://suscel-backend.foobar.in/api/admin/bundles?page=1&limit=10
+
+https://suscel-backend.foobar.in/api/admin/category/categories?page=1&limit=10
