@@ -11,6 +11,7 @@ import {
   faCreditCard,
   faHeart,
 } from "@fortawesome/free-solid-svg-icons";
+import GiftBundle from "../pages/GiftBundles";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -187,6 +188,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faUsers} />
+                  <GiftBundle />
                   Users
                 </NavLink>
               </li>

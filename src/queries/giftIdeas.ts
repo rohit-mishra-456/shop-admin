@@ -6,7 +6,7 @@ export const giftIdeasApis = createApi({
   baseQuery: baseQueryInstance,
   endpoints: (build) => ({
     getGiftIdeas: build.query({
-      query: () => ({ url: `orders?page=1&limit=10` }),
+      query: () => ({ url: `giftIdeas?page=1&limit=10` }),
     }),
     // updateOrder: build.mutation({
     //     query: (id, {data}) => ({ url: `post/${id}` }),

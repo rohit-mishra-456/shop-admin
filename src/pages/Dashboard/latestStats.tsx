@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Lists } from "../../customComponents/lists.tsx";
 import { useGetGiftBundlesQuery } from "../../queries/giftBundle.ts";
 import { useGetGiftIdeasQuery } from "../../queries/giftIdeas.ts";
@@ -10,6 +11,8 @@ export const LatestStats = () => {
     isLoading: loadingBundle,
     error: errorBundle,
   } = useGetGiftBundlesQuery(null);
+
+  // console.log(giftBundlesData, "to kaise hai aap log")
 
   const {
     data: ordersData,
@@ -30,6 +33,27 @@ export const LatestStats = () => {
   } = useGetGiftIdeasQuery(null);
 
   console.log(giftIdeasData);
+
+  const navigate = useNavigate();
+  const handler = (key: string) => {
+    let url = "/";
+    if (key?.toLowerCase().includes("bundles")) url = "/gift-bundles?p=1";
+    if (key?.toLowerCase().includes("order")) url = "/orders?p=1";
+    if (key?.toLowerCase().includes("user")) url = "/calendar?p=1";
+    if (key?.toLowerCase().includes("gift-ideas")) url = "/gift-ideas?p=1";
+
+    navigate(url);
+  };
+
+  //   bundles map function here
+  const bundles = giftBundlesData?.data?.bundles?.map((el: any) => {
+    return {
+      _id: el?._id,
+      name: el?.name,
+      image: el?.image,
+      description: el?.description,
+    };
+  });
 
   //   orders map function here
   const orders = ordersData?.data?.orders?.map((el: any) => {
@@ -65,29 +89,29 @@ export const LatestStats = () => {
     <>
       <Lists
         title="Gift Bundles"
-        handler={() => {}}
-        data={giftBundlesData?.data?.bundles}
+        handler={() => handler("giftBundles")}
+        data={bundles}
         isLoading={loadingBundle}
         error={errorBundle}
       />
 
       <Lists
         title="Orders"
-        handler={() => {}}
+        handler={() => handler("orders")}
         data={orders}
         isLoading={loadingOrder}
         error={errorOrder}
       />
       <Lists
         title="Users"
-        handler={() => {}}
+        handler={() => handler("users")}
         data={users}
         isLoading={loadingUser}
         error={errorUser}
       />
       <Lists
         title="Gift Ideas"
-        handler={() => {}}
+        handler={() => handler("gift-Ideas")}
         data={ideas}
         isLoading={lodingIdeas}
         error={errorIdeas}
