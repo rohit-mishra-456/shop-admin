@@ -12,6 +12,7 @@ import { useGetGiftBundlesQuery } from "../../queries/giftBundle";
       console.log(giftBundleData,"Kaise ho");
 
         //   bundles map function here
+        //
   const bundles = giftBundleData?.data?.bundles?.map((el: any) => {
     return {
       name: el?.name,
