@@ -71,7 +71,7 @@ export const LatestStats = () => {
       // _id: el?._id,
       name: el?.name,
       email: el?.email,
-      images: el?.profileImage,
+      image: el?.profileImage,
     };
   });
 
@@ -81,7 +81,7 @@ export const LatestStats = () => {
       // _id: el?._id,
       name: el?.name,
       description: el?.description,
-      images: el?.image,
+      image: el?.image,
     };
   });
 

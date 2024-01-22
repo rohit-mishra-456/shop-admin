@@ -1,36 +1,22 @@
-import { BundleCard } from "../../customComponents/BundleCard";
+import { CardWithButton } from "../../customComponents/cardWithButton";
 import { useGetGiftBundlesQuery } from "../../queries/giftBundle";
 
- const GiftBundle = () => {
+const GiftBundle = () => {
+  const {
+    data: giftBundleData,
+    isLoading,
+    error,
+  } = useGetGiftBundlesQuery(null);
 
-    const {
-        data: giftBundleData,
-        isLoading: loadingBundle,
-        error: errorBundle,
-      } = useGetGiftBundlesQuery(null);
-
-      console.log(giftBundleData,"Kaise ho");
-
-        //   bundles map function here
-        //
-  const bundles = giftBundleData?.data?.bundles?.map((el: any) => {
-    return {
-      name: el?.name,
-      image: el?.image,
-      description: el?.description,
-      price: el?.price,
-    };
-  });
-
+  console.log(giftBundleData, "Kaise ho");
   return (
     <>
-    <BundleCard
-        title="Gift Bundles"
-        // handler={() => }
-        data={bundles}
-        isLoading={loadingBundle}
-        error={errorBundle}
-      />
+      {giftBundleData?.data?.bundles &&
+        giftBundleData?.data?.bundles?.map((data: any) => {
+          return (
+            <CardWithButton data={data} isLoading={isLoading} error={error} />
+          );
+        })}
     </>
   );
 };

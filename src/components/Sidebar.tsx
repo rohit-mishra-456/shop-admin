@@ -11,7 +11,7 @@ import {
   faCreditCard,
   faHeart,
 } from "@fortawesome/free-solid-svg-icons";
-import GiftBundle from "../pages/GiftBundles";
+import GiftBundle from "../pages/GiftBundles/GiftBundle";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -188,7 +188,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faUsers} />
-                  <GiftBundle />
                   Users
                 </NavLink>
               </li>
@@ -197,9 +196,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Profile --> */}
               <li>
                 <NavLink
-                  to="/profile"
+                  to="/GiftBundle"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("profile") && "bg-graydark dark:bg-meta-4"
+                    pathname.includes("GiftBundle") && "bg-graydark dark:bg-meta-4"
                   }`}
                 >
                   <FontAwesomeIcon icon={faGift} />
@@ -211,17 +210,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Forms --> */}
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === "/forms" || pathname.includes("forms")
+                  pathname === "/GiftIdeas" || pathname.includes("GiftIdeas")
                 }
               >
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
                       <NavLink
-                        to="/forms/form-elements"
+                        to="/GiftIdeas"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === "/forms" ||
-                            pathname.includes("forms")) &&
+                          (pathname === "/GiftIdeas" ||
+                            pathname.includes("GiftIdeas")) &&
                           "bg-graydark dark:bg-meta-4"
                         }`}
                       >
