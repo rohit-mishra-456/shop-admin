@@ -37,7 +37,7 @@ export const LatestStats = () => {
   const navigate = useNavigate();
   const handler = (key: string) => {
     let url = "/";
-    if (key?.toLowerCase().includes("bundles")) url = "/gift-bundles?p=1";
+    if (key?.toLowerCase().includes("bundles")) url = "/GiftBundle";
     if (key?.toLowerCase().includes("order")) url = "/orders?p=1";
     if (key?.toLowerCase().includes("user")) url = "/calendar?p=1";
     if (key?.toLowerCase().includes("gift-ideas")) url = "/gift-ideas?p=1";

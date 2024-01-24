@@ -8,7 +8,6 @@ const GiftIdeas = () => {
     error,
   } = useGetGiftIdeasQuery(null);
 
-  console.log(giftIdeaData, "Kaise ho");
   return (
     <>
       {giftIdeaData?.data?.categories &&

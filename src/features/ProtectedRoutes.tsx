@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
 const ProtectedRoute = ({ children }: any) => {
-  const { token } = useSelector((state: RootState) => state.auth);
+  const token = useSelector((state: RootState) => state.auth.token || localStorage.getItem("accessToken"));
   if (token) {
     return <> {children}</>;
   }

@@ -11,21 +11,17 @@ export const bundlesApi = createApi({
         }),
 
         getGiftBundleById: build.query({
-            query: (id) => ({ url: `bundles?page=1&limit=10/${id}` }),
+            query: (id) => ({ url: `bundle/${id}` }),
         }),
-        // updateOrder: build.mutation({
-        //     query: (id, {data}) => ({ url: `post/${id}` }),
-        // }),
-        // deleteOrders: build.query({
-        //     query: (id) => ({ url: `post/${id}` }),
-        // }),
-        // createOrders: build.query({
-        //     query: (id) => ({ url: `post/${id}` }),
-        // }),
+
+        getGiftBundleProductsById: build.query({
+            query: (id) => ({ url: `bundle/${id}/products?page=1&limit=10` }),
+        }),
     }),
 })
  
 export const {
     useGetGiftBundlesQuery,
     useGetGiftBundleByIdQuery,
+    useGetGiftBundleProductsByIdQuery,
 } = bundlesApi;
