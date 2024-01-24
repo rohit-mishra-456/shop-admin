@@ -17,6 +17,9 @@ export const bundlesApi = createApi({
         getGiftBundleProductsById: build.query({
             query: (id) => ({ url: `bundle/${id}/products?page=1&limit=10` }),
         }),
+        getGiftBundleEditProductById: build.query({
+            query: (id) => ({ url: `products?page=1&limit=10&affiliate=false&giftBundleId=${id}` }),
+        }),
     }),
 })
  
@@ -24,4 +27,5 @@ export const {
     useGetGiftBundlesQuery,
     useGetGiftBundleByIdQuery,
     useGetGiftBundleProductsByIdQuery,
+    useGetGiftBundleEditProductByIdQuery,
 } = bundlesApi;

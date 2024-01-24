@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { CardWithButton } from "../../customComponents/cardWithButton";
-import { useGetGiftBundlesQuery } from "../../queries/giftBundle";
+import { useDeleteBunldesQuery, useGetGiftBundlesQuery } from "../../queries/giftBundle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -22,7 +22,7 @@ const GiftBundle = () => {
   };
 
   const deletehandler = () => {
-    navigate("/editDetails");
+    navigate("/GiftBundle");
   };
 
   return (
