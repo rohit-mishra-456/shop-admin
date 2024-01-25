@@ -17,12 +17,12 @@ const coreRoutes = [
     component: GiftIdeas,
   },
   {
-    path: '/details',
+    path: '/details/:id',
     title: 'details',
     component: details,
   },
   {
-    path: '/editDetails',
+    path: '/editDetails/:id',
     title: 'editDetails',
     component: editDetails,
   },

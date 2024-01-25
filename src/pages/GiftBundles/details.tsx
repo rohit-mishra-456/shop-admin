@@ -5,6 +5,8 @@ import {
 import { CardWithButton } from "../../customComponents/cardWithButton";
 import { Button, Space, Table, Tag } from "antd";
 import type { TableProps } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
+
 
 interface DataType {
   key: string;
@@ -16,6 +18,9 @@ interface DataType {
 }
 
 export const details = () => {
+
+  const {id} = useParams();
+
   // Details Table data
   const columns: TableProps<DataType>["columns"] = [
     {
@@ -55,10 +60,15 @@ export const details = () => {
     // },
   ];
 
-  const actions = [<Button>Edit</Button>];
+  const navigate = useNavigate();
+  const handleButton = () => {
+    navigate(`/editDetails/${id}`)
+  }
+
+  const actions = [<Button onClick={handleButton} >Edit</Button>];
   // details data
   const { data, isLoading, error } = useGetGiftBundleByIdQuery(
-    "65a61c540b0c8cf2704d6362"
+    id
   );
 
   // details table data
@@ -66,11 +76,11 @@ export const details = () => {
     data: detailsProduct,
     isLoading: loadingProduct,
     error: errorProduct,
-  } = useGetGiftBundleProductsByIdQuery("65a61c540b0c8cf2704d6362");
+  } = useGetGiftBundleProductsByIdQuery(id);
   console.log("Hyyy", detailsProduct);
 
   const tableData: DataType[] = detailsProduct?.data?.products?.map(
-    (el, i) => ({
+    (el: any, i:any) => ({
       key: i,
       image: <img src={el?.images[0]?.url} className="h-15" />,
       name: el?.name,

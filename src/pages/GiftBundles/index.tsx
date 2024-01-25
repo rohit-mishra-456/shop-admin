@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { CardWithButton } from "../../customComponents/cardWithButton";
-import { useDeleteBunldesQuery, useGetGiftBundlesQuery } from "../../queries/giftBundle";
+import {  useGetGiftBundlesQuery } from "../../queries/giftBundle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,12 +13,12 @@ const GiftBundle = () => {
 
   const navigate = useNavigate();
 
-  const viewhandler = () => {
-    navigate("/details");
+  const viewhandler = (id:any) => {
+    navigate(`/details/${id}`);
   };
 
-  const edithandler = () => {
-    navigate("/editDetails");
+  const edithandler = (id:any) => {
+    navigate(`/editDetails/${id}`);
   };
 
   const deletehandler = () => {
@@ -35,8 +35,8 @@ const GiftBundle = () => {
               isLoading={isLoading}
               error={error}
               actions={[
-                <FontAwesomeIcon icon={faEye} onClick={viewhandler} />,
-                <FontAwesomeIcon icon={faPen} onClick={edithandler} />,
+                <FontAwesomeIcon icon={faEye} onClick={() => viewhandler( data._id )} />,
+                <FontAwesomeIcon icon={faPen} onClick={() => edithandler( data._id )} />,
                 <FontAwesomeIcon icon={faTrash} onClick={deletehandler} color="red" />,
               ]}
             />
