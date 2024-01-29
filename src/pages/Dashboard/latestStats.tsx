@@ -86,7 +86,7 @@ export const LatestStats = () => {
   });
 
   return (
-    <>
+    <div>
       <Lists
         title="Gift Bundles"
         handler={() => handler("giftBundles")}
@@ -116,6 +116,6 @@ export const LatestStats = () => {
         isLoading={lodingIdeas}
         error={errorIdeas}
       />
-    </>
+    </div>
   );
 };

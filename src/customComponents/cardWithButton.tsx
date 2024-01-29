@@ -31,7 +31,7 @@ export const CardWithButton = (props: IProps) => {
           <p>
             <b className="mr-1">Items:</b>
             {data?.products?.length}
-            <b className="ml-5">Price:</b>
+            {data?.price && <b className="ml-5">Price:</b>}
             {data?.price && <> ${data?.price}</>}
           </p>
         </div>
