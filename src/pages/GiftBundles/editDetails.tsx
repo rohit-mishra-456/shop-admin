@@ -17,8 +17,10 @@ import { UploadOutlined } from "@ant-design/icons";
 
 import type { TableProps } from "antd";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { type } from "os";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 interface DataType {
   key: string;
@@ -28,21 +30,6 @@ interface DataType {
   description: string;
   price: string;
 }
-
-// rowSelection object indicates the need for row selection
-const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-  getCheckboxProps: (record: DataType) => ({
-    disabled: record.name === "Disabled User", // Column configuration not to be checked
-    name: record.name,
-  }),
-};
 
 export const editDetails = () => {
   const { id } = useParams();
@@ -89,8 +76,24 @@ export const editDetails = () => {
     // },
   ];
 
+  const navigate = useNavigate();
+  const backNavigate = () => {
+    navigate("/GiftBundle");
+  };
   const { data, isLoading, error } = useGetGiftBundleByIdQuery(id);
-  console.log(data?.data, "Edit");
+
+  const selectedIds = data?.data?.products;
+
+  console.log(selectedIds, "Edit");
+
+  // useState for updating api
+
+  const [bundleData, setBundleData] = useState({
+    name: "",
+    description: "",
+    image: "",
+    products: [""],
+  });
 
   const {
     data: editProducts,
@@ -101,7 +104,7 @@ export const editDetails = () => {
 
   const tableData: DataType[] = editProducts?.data?.products?.map(
     (el: any, i: any) => ({
-      key: i,
+      key: el?._id,
       image: <img src={el?.images[0]?.url} className="h-15" />,
       name: el?.name,
       brand: el?.brand,
@@ -112,14 +115,24 @@ export const editDetails = () => {
     })
   );
 
-  // useState for updating api
-
-  const [bundleData, setBundleData] = useState({
-    name: "",
-    description: "",
-    image: "",
-    products: [],
-  });
+  // rowSelection object indicates the need for row selection
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        "selectedRows: ",
+        selectedRows
+      );
+      setBundleData({
+        ...bundleData,
+        products: selectedRows?.map((item) => item?.key),
+      });
+    },
+    getCheckboxProps: (record: DataType) => ({
+      disabled: record.name === "Disabled User", // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
 
   // update api (Edit)
 
@@ -153,36 +166,61 @@ export const editDetails = () => {
 
   return (
     <>
-      <Form
-        name="wrap"
-        labelCol={{ flex: "110px" }}
-        labelAlign="left"
-        labelWrap
-        wrapperCol={{ flex: 1 }}
-        colon={false}
-        style={{ maxWidth: 600 }}
-      >
-        <Form.Item label="Name" name="username" initialValue={data?.data?.name}>
-          <Input
-            onChange={(event) =>
-              setBundleData({ ...bundleData, name: event.target.value })
-            }
+      <div className="">
+        <Button className=" bg-[#3C50E0] w-12 h-12 rounded-full">
+          <FontAwesomeIcon
+            size="xl"
+            color="white"
+            icon={faArrowLeft}
+            onClick={backNavigate}
           />
-        </Form.Item>
+        </Button>
+      </div>
+      <div className="mt-5 mb-5">
+        <h2 className="text-[27px] font-semibold text-black">
+          Edit Gift Bundle
+        </h2>
+      </div>
 
-        <Form.Item
-          label="Description"
-          name="description"
-          initialValue={data?.data?.description}
-        >
-          <Input
-            onChange={(event) =>
-              setBundleData({ ...bundleData, description: event.target.value })
-            }
-          />
-        </Form.Item>
+      <div className="rounded-lg border border-stroke bg-white ">
+        <div className="mt-6 mb-4 ml-6">
+          <Form
+            name="wrap"
+            labelCol={{ flex: "110px" }}
+            labelAlign="left"
+            labelWrap
+            wrapperCol={{ flex: 1 }}
+            colon={false}
+            style={{ maxWidth: 600 }}
+          >
+            <Form.Item
+              label={<h3 className="text-xl font-bold">Name</h3>}
+              name="username"
+              initialValue={data?.data?.name}
+            >
+              <Input className="border-0 rounded-none !shadow-none border-b-2 hover:border-black hover:shadow-none"
+                onChange={(event) =>
+                  setBundleData({ ...bundleData, name: event.target.value })
+                }
+              />
+            </Form.Item>
 
-        {/* <Form.Item
+            <Form.Item
+              label={<h3 className="text-xl font-bold">Description</h3>}
+              name="description"
+              initialValue={data?.data?.description}
+            >
+              <Input className="border-0 rounded-none !shadow-none border-b-2 hover:border-black hover:shadow-none"
+                onChange={(event) =>
+                  setBundleData({
+                    ...bundleData,
+                    description: event.target.value,
+                  })
+                }
+              />
+            </Form.Item>
+
+            {/* <Form.Item
           name="upload"
           label="Image"
           valuePropName="fileList"
@@ -198,27 +236,29 @@ export const editDetails = () => {
             } type="file"
           /> */}
 
-        <Upload
-          name="image"
-          // onChange={({ file, fileList }) => {
-          //   if (file.status !== 'uploading') {
-          //   console.log("hnji..", file, fileList);
-          //   }
-          // }}
-          listType="picture"
-        >
-          <label className="mr-15">Image</label>
-          <Button icon={<UploadOutlined />}>Click to upload</Button>
-          <img src={data?.data?.image} alt="image" className="h-50 mt-10" />
-        </Upload>
-        {/* </Form.Item> */}
-      </Form>
-      <br />
+            <Upload
+              name="image"
+              // onChange={({ file, fileList }) => {
+              //   if (file.status !== 'uploading') {
+              //   console.log("hnji..", file, fileList);
+              //   }
+              // }}
+              listType="picture"
+            >
+              <label className="mr-18 text-9xl font-bold">Image</label>
+              <Button icon={<UploadOutlined />}>Click to upload</Button>
+              <img src={data?.data?.image} alt="image" className="h-50 mt-10" />
+            </Upload>
+            {/* </Form.Item> */}
+          </Form>
+        </div>
+      </div>
 
       <Table
         rowSelection={{
           type: selectionType,
           ...rowSelection,
+          defaultSelectedRowKeys: selectedIds,
         }}
         columns={columns}
         dataSource={tableData}

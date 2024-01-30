@@ -32,6 +32,7 @@ export const details = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      ellipsis: true,
     },
     {
       title: "Brand",

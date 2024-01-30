@@ -30,6 +30,9 @@ export const bundlesApi = createApi({
         body: data,
       }),
     }),
+    deleteBundles: build.mutation({
+      query: (id) => ({ url: `bundle/${id}`, method: "delete" }),
+    }),
   }),
 });
 
@@ -39,4 +42,5 @@ export const {
   useGetGiftBundleProductsByIdQuery,
   useGetGiftBundleEditProductByIdQuery,
   useUpdateBundlesMutation,
+  useDeleteBundlesMutation,
 } = bundlesApi;

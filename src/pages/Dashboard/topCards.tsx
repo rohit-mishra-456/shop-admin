@@ -28,7 +28,7 @@ export const TopCards = () => {
   if (isLoading) {
     return <>loading</>;
   }
-  console.log("data", data, "object", Object.entries(data.data));
+  // console.log("data", data, "object", Object.entries(data.data));
 
   return (
     <>
