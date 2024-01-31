@@ -6,7 +6,8 @@ import { CardWithButton } from "../../customComponents/cardWithButton";
 import { Button, Space, Table, Tag } from "antd";
 import type { TableProps } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 interface DataType {
   key: string;
@@ -18,8 +19,7 @@ interface DataType {
 }
 
 export const details = () => {
-
-  const {id} = useParams();
+  const { id } = useParams();
 
   // Details Table data
   const columns: TableProps<DataType>["columns"] = [
@@ -63,14 +63,16 @@ export const details = () => {
 
   const navigate = useNavigate();
   const handleButton = () => {
-    navigate(`/editDetails/${id}`)
-  }
+    navigate(`/editDetails/${id}`);
+  };
 
-  const actions = [<Button onClick={handleButton} >Edit</Button>];
+  const backNavigate = () => {
+    navigate("/GiftBundle");
+  };
+
+  const actions = [<Button onClick={handleButton}>Edit</Button>];
   // details data
-  const { data, isLoading, error } = useGetGiftBundleByIdQuery(
-    id
-  );
+  const { data, isLoading, error } = useGetGiftBundleByIdQuery(id);
 
   // details table data
   const {
@@ -81,7 +83,7 @@ export const details = () => {
   console.log("Hyyy", detailsProduct);
 
   const tableData: DataType[] = detailsProduct?.data?.products?.map(
-    (el: any, i:any) => ({
+    (el: any, i: any) => ({
       key: i,
       image: <img src={el?.images[0]?.url} className="h-15" />,
       name: el?.name,
@@ -95,14 +97,30 @@ export const details = () => {
 
   return (
     <div>
+      <div className="">
+        <Button className=" bg-[#3C50E0] w-12 h-12 rounded-full">
+          <FontAwesomeIcon
+            size="xl"
+            color="white"
+            icon={faArrowLeft}
+            onClick={backNavigate}
+          />
+        </Button>
+      </div>
+      <div className="mt-5 mb-5">
+        <h2 className="text-[27px] font-semibold text-black">
+          Gift Bundle Details
+        </h2>
+      </div>
       <CardWithButton
         data={data?.data}
         isLoading={isLoading}
         error={error}
         actions={actions}
       />
-
-      <Table columns={columns} dataSource={tableData} />
+      <div className="rounded-lg border border-stroke bg-white mt-10">
+        <Table columns={columns} dataSource={tableData} />
+      </div>
     </div>
   );
 };

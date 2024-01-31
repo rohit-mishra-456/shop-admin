@@ -5,9 +5,9 @@ import {
   useGetGiftBundlesQuery,
 } from "../../queries/giftBundle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { Modal } from "antd";
+import { Button, Modal } from "antd";
 
 const GiftBundle = () => {
   const {
@@ -33,20 +33,18 @@ const GiftBundle = () => {
     navigate(`/editDetails/${id}`);
   };
 
-  // const deletehandler = (id: any) => {
-  //   deleteBundle(id);
-  //   refetchGiftBundles();
-  // };
+  const addBundle = () => {
+    navigate('/editDetails/new');
+  }
 
   // dialog box for delete button
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currData,setCurrData] = useState<any>();
+  const [currData, setCurrData] = useState<any>();
 
   const handleOk = (id: any) => {
-    deleteBundle(id);
+    deleteBundle(id).then(() => refetchGiftBundles());
     setIsModalOpen(false);
-    refetchGiftBundles();
   };
 
   const handleCancel = () => {
@@ -58,12 +56,18 @@ const GiftBundle = () => {
     setIsModalOpen(true);
   }
   return (
+    <>
+    <div className='flex items-center justify-between mb-5'>
+        <div>
+          <h2 className='text-black text-3xl font-semibold'>Gift Bundles</h2>
+          <p className='mt-0'>Total gift bundles: {giftBundleData?.data?.bundles?.length}</p>
+        </div>
+        <Button className='bg-blue-800 text-white h-10' onClick={addBundle} ><FontAwesomeIcon icon={faPlus} className='mr-1' />ADD GIFT IDEA</Button>
+      </div>
     <div className="grid grid-cols-2 gap-4">
       {giftBundleData?.data?.bundles &&
         giftBundleData?.data?.bundles?.map((data: any) => {
-
           return (
-            <>
               <CardWithButton
                 data={data}
                 isLoading={isLoading}
@@ -79,28 +83,30 @@ const GiftBundle = () => {
                   />,
                   <FontAwesomeIcon
                     icon={faTrash}
-                    onClick={()=>{
+                    onClick={() => {
                       handleShowModal(data);
                     }}
                     color="red"
                   />,
                 ]}
               />
-              
-            </>
           );
         })}
-        <Modal
-                title={"Confirm Delete"}
-                open={isModalOpen}
-                onOk={() => handleOk(currData?._id)}
-                onCancel={handleCancel}
-                cancelText='no'
-                okText={<h4 className="" >yes</h4>}
-              >
-                <p>Are you sure you want to delete <strong>{(currData?.name)}</strong> bundle?</p>
-              </Modal>
+      <Modal
+        title={"Confirm Delete"}
+        open={isModalOpen}
+        onOk={() => handleOk(currData?._id)}
+        onCancel={handleCancel}
+        cancelText="no"
+        okText="yes"
+      >
+        <p>
+          Are you sure you want to delete <strong>{currData?.name}</strong>{" "}
+          bundle?
+        </p>
+      </Modal>
     </div>
+    </>
   );
 };
 

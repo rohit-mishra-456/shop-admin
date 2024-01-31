@@ -19,7 +19,10 @@ export const bundlesApi = createApi({
     }),
     getGiftBundleEditProductById: build.query({
       query: (id) => ({
-        url: `products?page=1&limit=10&affiliate=false&giftBundleId=${id}`,
+        // url: `products?page=1&limit=10&affiliate=false&giftBundleId=${id}`,
+        url: `products?page=1&limit=10&affiliate=false${
+          id === "new" ? "" : `& giftBundleId=${id} `
+        }`,
       }),
     }),
 
@@ -33,6 +36,14 @@ export const bundlesApi = createApi({
     deleteBundles: build.mutation({
       query: (id) => ({ url: `bundle/${id}`, method: "delete" }),
     }),
+
+    addBundles: build.mutation({
+      query: (data) => ({
+        url: 'bundle/',
+        method: "post",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -43,4 +54,5 @@ export const {
   useGetGiftBundleEditProductByIdQuery,
   useUpdateBundlesMutation,
   useDeleteBundlesMutation,
+  useAddBundlesMutation,
 } = bundlesApi;

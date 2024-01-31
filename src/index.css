@@ -161,3 +161,15 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+
+[class^="ant-modal-footer"] >  button:nth-child(2) {
+  border: 1px solid rgba(0, 0, 0, 0.192);
+  color: black;
+}
+
+[class^="ant-modal-footer"] >  :hover:nth-child(2) {
+  color: #4096ff !important;
+  background-color: transparent !important;
+  border: 1px solid #4096ff;
+}

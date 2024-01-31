@@ -18,7 +18,7 @@ export const CardWithButton = (props: IProps) => {
   }
 
   return (
-    <div className="flex border border-inherit gap-4 items-center">
+    <div className="flex border border-inherit gap-4 items-center bg-white border-stroke rounded-lg">
       <div className="w-22 h-20 ">
         <img src={data?.image} alt="hi" />
       </div>
@@ -36,7 +36,7 @@ export const CardWithButton = (props: IProps) => {
           </p>
         </div>
       </div>
-      <div className="cursor-pointer grid grid-cols-3 gap-4">
+      <div className="cursor-pointer grid md:grid-cols-3 gap-4">
         {props.actions?.map((Component) => Component)}
       </div>
       {/* <div className="cursor-pointer" onClick={handler}>

@@ -80,6 +80,11 @@ export const editDetails = () => {
   const backNavigate = () => {
     navigate("/GiftBundle");
   };
+
+  // cancel button navigate
+  const cancelNavigate = () => {
+    navigate("/GiftBundle");
+  };
   const { data, isLoading, error } = useGetGiftBundleByIdQuery(id);
 
   const selectedIds = data?.data?.products;
@@ -160,9 +165,9 @@ export const editDetails = () => {
     return <>Loading...</>;
   }
 
-  if (error) {
-    return <>Something Went Wrong...</>;
-  }
+  // if (error) {
+  //   return <>Something Went Wrong...</>;
+  // }
 
   return (
     <>
@@ -178,7 +183,7 @@ export const editDetails = () => {
       </div>
       <div className="mt-5 mb-5">
         <h2 className="text-[27px] font-semibold text-black">
-          Edit Gift Bundle
+          {id === "new" ? "Add" : "Edit"} Gift Bundle
         </h2>
       </div>
 
@@ -198,7 +203,8 @@ export const editDetails = () => {
               name="username"
               initialValue={data?.data?.name}
             >
-              <Input className="border-0 rounded-none !shadow-none border-b-2 hover:border-black hover:shadow-none"
+              <Input
+                className="border-0 rounded-none !shadow-none border-b-2 hover:border-black hover:shadow-none"
                 onChange={(event) =>
                   setBundleData({ ...bundleData, name: event.target.value })
                 }
@@ -210,7 +216,8 @@ export const editDetails = () => {
               name="description"
               initialValue={data?.data?.description}
             >
-              <Input className="border-0 rounded-none !shadow-none border-b-2 hover:border-black hover:shadow-none"
+              <Input
+                className="border-0 rounded-none !shadow-none border-b-2 hover:border-black hover:shadow-none"
                 onChange={(event) =>
                   setBundleData({
                     ...bundleData,
@@ -254,23 +261,27 @@ export const editDetails = () => {
         </div>
       </div>
 
-      <Table
-        rowSelection={{
-          type: selectionType,
-          ...rowSelection,
-          defaultSelectedRowKeys: selectedIds,
-        }}
-        columns={columns}
-        dataSource={tableData}
-      />
+      <div className="rounded-lg border border-stroke bg-white mt-10">
+        <Table
+          rowSelection={{
+            type: selectionType,
+            ...rowSelection,
+            defaultSelectedRowKeys: selectedIds,
+          }}
+          columns={columns}
+          dataSource={tableData}
+        />
+      </div>
 
-      <div className=" flex justify-end gap-10">
-        <Button className="h-11">Cancel</Button>
+      <div className=" flex justify-end gap-10 mt-5">
+        <Button className="h-11" onClick={cancelNavigate}>
+          Cancel
+        </Button>
         <Button
           className="bg-blue-800 text-whiten hover:!bg-white hover:!text-black h-11"
           onClick={updateBundleHandler}
         >
-          Save Changes
+          {id === "new" ? "ADD BUNDLE" : "Save Changes"}
         </Button>
       </div>
     </>
