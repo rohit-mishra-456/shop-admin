@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { Button, Modal } from "antd";
+import { CustomModal } from "../../customComponents/modal";
 
 const GiftBundle = () => {
   const {
@@ -92,7 +93,7 @@ const GiftBundle = () => {
               />
           );
         })}
-      <Modal
+      {/* <Modal
         title={"Confirm Delete"}
         open={isModalOpen}
         onOk={() => handleOk(currData?._id)}
@@ -104,7 +105,11 @@ const GiftBundle = () => {
           Are you sure you want to delete <strong>{currData?.name}</strong>{" "}
           bundle?
         </p>
-      </Modal>
+      </Modal> */}
+      <CustomModal title={"title"}  open={isModalOpen}  onOk={() => handleOk(currData?._id)}  onCancel={handleCancel}  cancelText={"cancel"}  okText={"ok"}  message={<p>
+          Are you sure you want to delete <strong>{currData?.name}</strong>{" "}
+          bundle?
+        </p>}/>
     </div>
     </>
   );

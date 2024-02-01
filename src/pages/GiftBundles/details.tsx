@@ -117,6 +117,7 @@ export const details = () => {
         isLoading={isLoading}
         error={error}
         actions={actions}
+        showDetails= {false}
       />
       <div className="rounded-lg border border-stroke bg-white mt-10">
         <Table columns={columns} dataSource={tableData} />
