@@ -1,14 +1,16 @@
 import { Modal } from "antd";
 import { ReactNode } from "react";
+
 interface CustomModalProps {
-    title: string;
-    open: boolean;
-    onOk: any;
-    onCancel: any;
-    cancelText: string;
-    okText: string;
-    message: ReactNode;
-  }
+  title: string;
+  open: boolean;
+  onOk: any;
+  onCancel: any;
+  cancelText: string;
+  okText: string;
+  message: ReactNode;
+}
+
 export const CustomModal = ({
   title,
   open,
@@ -27,7 +29,9 @@ export const CustomModal = ({
       cancelText={cancelText}
       okText={okText}
     >
-      <p>{message}</p>
+      <p>
+        {message}
+      </p>
     </Modal>
   );
 };

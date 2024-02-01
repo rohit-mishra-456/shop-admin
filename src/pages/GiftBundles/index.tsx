@@ -5,7 +5,12 @@ import {
   useGetGiftBundlesQuery,
 } from "../../queries/giftBundle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPen, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEye,
+  faPen,
+  faPlus,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { Button, Modal } from "antd";
 import { CustomModal } from "../../customComponents/modal";
@@ -35,8 +40,8 @@ const GiftBundle = () => {
   };
 
   const addBundle = () => {
-    navigate('/editDetails/new');
-  }
+    navigate("/editDetails/new");
+  };
 
   // dialog box for delete button
 
@@ -58,17 +63,22 @@ const GiftBundle = () => {
   }
   return (
     <>
-    <div className='flex items-center justify-between mb-5'>
+      <div className="flex items-center justify-between mb-5">
         <div>
-          <h2 className='text-black text-3xl font-semibold'>Gift Bundles</h2>
-          <p className='mt-0'>Total gift bundles: {giftBundleData?.data?.bundles?.length}</p>
+          <h2 className="text-black text-3xl font-semibold">Gift Bundles</h2>
+          <p className="mt-0">
+            Total gift bundles: {giftBundleData?.data?.bundles?.length}
+          </p>
         </div>
-        <Button className='bg-blue-800 text-white h-10' onClick={addBundle} ><FontAwesomeIcon icon={faPlus} className='mr-1' />ADD GIFT IDEA</Button>
+        <Button className="bg-blue-800 text-white h-10" onClick={addBundle}>
+          <FontAwesomeIcon icon={faPlus} className="mr-1" />
+          ADD GIFT IDEA
+        </Button>
       </div>
-    <div className="grid grid-cols-2 gap-4">
-      {giftBundleData?.data?.bundles &&
-        giftBundleData?.data?.bundles?.map((data: any) => {
-          return (
+      <div className="grid grid-cols-2 gap-4">
+        {giftBundleData?.data?.bundles &&
+          giftBundleData?.data?.bundles?.map((data: any) => {
+            return (
               <CardWithButton
                 data={data}
                 isLoading={isLoading}
@@ -91,9 +101,9 @@ const GiftBundle = () => {
                   />,
                 ]}
               />
-          );
-        })}
-      {/* <Modal
+            );
+          })}
+        {/* <Modal
         title={"Confirm Delete"}
         open={isModalOpen}
         onOk={() => handleOk(currData?._id)}
@@ -106,11 +116,22 @@ const GiftBundle = () => {
           bundle?
         </p>
       </Modal> */}
-      <CustomModal title={"title"}  open={isModalOpen}  onOk={() => handleOk(currData?._id)}  onCancel={handleCancel}  cancelText={"cancel"}  okText={"ok"}  message={<p>
-          Are you sure you want to delete <strong>{currData?.name}</strong>{" "}
-          bundle?
-        </p>}/>
-    </div>
+
+        <CustomModal
+          title={"Confirm Delete"}
+          open={isModalOpen}
+          onOk={() => handleOk(currData?._id)}
+          onCancel={handleCancel}
+          cancelText={"no"}
+          okText={"yes"}
+          message={
+            <p>
+              Are you sure you want to delete <strong>{currData?.name}</strong>{" "}
+              bundle?
+            </p>
+          }
+        />
+      </div>
     </>
   );
 };
