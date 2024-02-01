@@ -21,6 +21,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { type } from "os";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useAddSingleImageMutation } from "../../queries/image";
 
 interface DataType {
   key: string;
@@ -150,6 +151,27 @@ export const editDetails = () => {
     );
   };
 
+  // add image
+
+  const [addSingleImage] = useAddSingleImageMutation();
+
+  const uploadImageHandler = (e: any) => {
+    console.log(e, "e");
+    const fileType = e?.fileList?.[0]?.type.split("/")[1];
+    console.log(fileType, "file");
+    const dataToSend = {
+      fileType,
+      privateImage: false,
+    };
+    addSingleImage(dataToSend).then((res) =>{
+      const {fileUrl} = res?.data?.data;
+      console.log(fileUrl,"fileUrl")
+      setBundleData({ ...bundleData, image: fileUrl })
+    }
+      // setBundleData({ ...bundleData, image: res?.data?.fileUrl })
+    );
+  };
+
   useEffect(() => {
     if (id && data) {
       setBundleData({
@@ -245,6 +267,7 @@ export const editDetails = () => {
 
             <Upload
               name="image"
+              onChange={uploadImageHandler}
               // onChange={({ file, fileList }) => {
               //   if (file.status !== 'uploading') {
               //   console.log("hnji..", file, fileList);

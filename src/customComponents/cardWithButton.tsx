@@ -23,7 +23,7 @@ export const CardWithButton = (props: IProps) => {
         <img src={data?.image} alt="hi" />
       </div>
       <div className="mt-5 leading-8">
-        <h2 className="font-bold text-black text-2xl ">{data?.name}</h2>
+        <h2 className="font-bold text-black text-2xl text-ellipsis ">{data?.name}</h2>
         <p>
           <b className="mr-1">Description:</b> {data?.description}
         </p>
@@ -33,10 +33,13 @@ export const CardWithButton = (props: IProps) => {
             {data?.products?.length}
             {data?.price && <b className="ml-5">Price:</b>}
             {data?.price && <> ${data?.price}</>}
+
+            {data?.weight && <b className="ml-5">Weight (in kg): </b>}
+            {data?.weight && <> {data?.weight}</>}
           </p>
         </div>
       </div>
-      <div className="cursor-pointer grid md:grid-cols-3 gap-4">
+      <div className="cursor-pointer flex gap-4 ml-auto mr-8 mb-10">
         {props.actions?.map((Component) => Component)}
       </div>
       {/* <div className="cursor-pointer" onClick={handler}>
