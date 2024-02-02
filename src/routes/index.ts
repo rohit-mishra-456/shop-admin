@@ -3,6 +3,7 @@ import GiftBundle from '../pages/GiftBundles';
 import GiftIdeas from '../pages/GiftIdeas';
 import { details } from '../pages/GiftBundles/details';
 import { editDetails } from '../pages/GiftBundles/editDetails';
+import Orders from '../pages/Orders';
 
 const coreRoutes = [
  
@@ -25,6 +26,11 @@ const coreRoutes = [
     path: '/editDetails/:id',
     title: 'editDetails',
     component: editDetails,
+  },
+  {
+    path: '/orders',
+    title: 'orders',
+    component: Orders,
   },
 ];
 

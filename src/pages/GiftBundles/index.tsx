@@ -38,7 +38,6 @@ const GiftBundle = () => {
   const edithandler = (id: any) => {
     navigate(`/editDetails/${id}`);
   };
-
   const addBundle = () => {
     navigate("/editDetails/new");
   };
@@ -61,6 +60,9 @@ const GiftBundle = () => {
     setCurrData(data);
     setIsModalOpen(true);
   }
+
+  const styleClasses =
+    "text-black border-[#00000031] hover:!bg-transparent hover:!text-[#4096ff] hover:border-[#4096ff] ";
   return (
     <>
       <div className="flex items-center justify-between mb-5">
@@ -103,20 +105,6 @@ const GiftBundle = () => {
               />
             );
           })}
-        {/* <Modal
-        title={"Confirm Delete"}
-        open={isModalOpen}
-        onOk={() => handleOk(currData?._id)}
-        onCancel={handleCancel}
-        cancelText="no"
-        okText="yes"
-      >
-        <p>
-          Are you sure you want to delete <strong>{currData?.name}</strong>{" "}
-          bundle?
-        </p>
-      </Modal> */}
-
         <CustomModal
           title={"Confirm Delete"}
           open={isModalOpen}
@@ -130,6 +118,7 @@ const GiftBundle = () => {
               bundle?
             </p>
           }
+          okButtonProps={{ className: styleClasses }}
         />
       </div>
     </>

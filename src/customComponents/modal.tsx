@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { ButtonProps, Modal } from "antd";
 import { ReactNode } from "react";
 
 interface CustomModalProps {
@@ -9,6 +9,7 @@ interface CustomModalProps {
   cancelText: string;
   okText: string;
   message: ReactNode;
+  okButtonProps: ButtonProps;
 }
 
 export const CustomModal = ({
@@ -19,6 +20,7 @@ export const CustomModal = ({
   cancelText,
   okText,
   message,
+  okButtonProps,
 }: CustomModalProps) => {
   return (
     <Modal
@@ -28,10 +30,9 @@ export const CustomModal = ({
       onCancel={onCancel}
       cancelText={cancelText}
       okText={okText}
+      okButtonProps={okButtonProps}
     >
-      <p>
-        {message}
-      </p>
+      <p>{message}</p>
     </Modal>
   );
 };
