@@ -249,30 +249,9 @@ export const editDetails = () => {
               />
             </Form.Item>
 
-            {/* <Form.Item
-          name="upload"
-          label="Image"
-          valuePropName="fileList"
-          initialValue={
-            <>
-              <img src={data?.data?.image} alt="image" />
-            </>
-          }
-        >
-          <Input
-            onChange={(event) =>
-              setBundleData({ ...bundleData, image: event.target.value })
-            } type="file"
-          /> */}
-
             <Upload
               name="image"
               onChange={uploadImageHandler}
-              // onChange={({ file, fileList }) => {
-              //   if (file.status !== 'uploading') {
-              //   console.log("hnji..", file, fileList);
-              //   }
-              // }}
               listType="picture"
             >
               <label className="mr-18 text-9xl font-bold">Image</label>

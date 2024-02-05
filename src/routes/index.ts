@@ -4,6 +4,7 @@ import GiftIdeas from '../pages/GiftIdeas';
 import { details } from '../pages/GiftBundles/details';
 import { editDetails } from '../pages/GiftBundles/editDetails';
 import Orders from '../pages/Orders';
+import  OrderDetails  from '../pages/Orders/orderDetails';
 
 const coreRoutes = [
  
@@ -31,6 +32,11 @@ const coreRoutes = [
     path: '/orders',
     title: 'orders',
     component: Orders,
+  },
+  {
+    path: '/ordersdetails/:id',
+    title: 'ordersdetails',
+    component: OrderDetails,
   },
 ];
 
