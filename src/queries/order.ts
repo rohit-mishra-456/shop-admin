@@ -7,7 +7,7 @@ export const orderApis = createApi({
     baseQuery: baseQueryInstance,
     endpoints: (build) => ({
         getOrders: build.query({
-            query: () => ({ url: `orders?page=1&limit=63` }),
+            query: () => ({ url: `orders?page=1&limit=100` }),
         }),
 
         getOrderById: build.query({

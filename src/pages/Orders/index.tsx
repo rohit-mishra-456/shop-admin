@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Button, Table, Tooltip } from "antd";
+import { Table, Tooltip } from "antd";
 import type { TableColumnsType } from "antd";
 import { useGetOrdersQuery } from "../../queries/order";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -70,14 +69,13 @@ const columns: TableColumnsType<DataType> = [
   },
 ];
 
-
 const Orders: React.FC = () => {
   // orders api
 
   const navigate = useNavigate();
-const viewOrder = (id: any) => {
-  navigate(`/ordersdetails/${id}`)
-}
+  const viewOrder = (id: any) => {
+    navigate(`/ordersdetails/${id}`);
+  };
 
   const { data: ordersData, isLoading } = useGetOrdersQuery(1);
   console.log(ordersData, "ROHIT");

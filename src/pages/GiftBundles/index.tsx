@@ -74,7 +74,7 @@ const GiftBundle = () => {
         </div>
         <Button className="bg-blue-800 text-white h-10" onClick={addBundle}>
           <FontAwesomeIcon icon={faPlus} className="mr-1" />
-          ADD GIFT IDEA
+          ADD GIFT BUNDLE
         </Button>
       </div>
       <div className="grid grid-cols-2 gap-4">
