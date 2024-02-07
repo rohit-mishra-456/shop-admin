@@ -1,4 +1,4 @@
-import { Table, Tooltip } from "antd";
+import { Avatar, Table, Tooltip } from "antd";
 import type { TableColumnsType } from "antd";
 import { useGetOrdersQuery } from "../../queries/order";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -86,7 +86,7 @@ const Orders: React.FC = () => {
     return {
       key: i,
       sno: ` ${i + 1}`,
-      image: <img src={el?.bundlesDetails[0]?.image} className="h-15" />,
+      image: <div className="w-13 h-13"><img src={el?.bundlesDetails[0]?.image}  /></div>,
       username: el?.user?.name,
       email: el?.user?.email,
       orderid: el?.orderItems?.[0]?.orderId,
@@ -136,7 +136,7 @@ const Orders: React.FC = () => {
       action: (
         <div className="flex gap-3 cursor-pointer">
           <FontAwesomeIcon icon={faEye} onClick={() => viewOrder(el._id)} />
-          <FontAwesomeIcon icon={faPen} />
+          <FontAwesomeIcon icon={faPen} onClick={(e) => { e.stopPropagation(); }} />
         </div>
       ),
     };
@@ -158,6 +158,11 @@ const Orders: React.FC = () => {
         </div>
         <div className="border border-stroke rounded-lg cursor-pointer">
           <Table
+         onRow={ (record) => {
+          return {
+            onClick : () => viewOrder(record?.orderid)
+          }
+        }}
             pagination={{ defaultPageSize: 10 }}
             scroll={{ x: 1300 }}
             columns={columns}

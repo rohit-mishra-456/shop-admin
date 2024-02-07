@@ -85,7 +85,11 @@ export const details = () => {
   const tableData: DataType[] = detailsProduct?.data?.products?.map(
     (el: any, i: any) => ({
       key: i,
-      image: <img src={el?.images[0]?.url} className="h-15" />,
+      image: (
+        <div className="w-13 h-13">
+          <img src={el?.images[0]?.url} className="h-15" />
+        </div>
+      ),
       name: el?.name,
       brand: el?.brand,
       description: el?.description,
@@ -117,7 +121,7 @@ export const details = () => {
         isLoading={isLoading}
         error={error}
         actions={actions}
-        showDetails= {false}
+        showDetails={false}
       />
       <div className="rounded-lg border border-stroke bg-white mt-10">
         <Table columns={columns} dataSource={tableData} />

@@ -2,7 +2,7 @@ import { Button, Card } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetOrderByIdQuery } from "../../queries/order";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCreditCard, faTruck, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Space, Table, Tag } from "antd";
 import type { TableProps } from "antd";
 
@@ -56,11 +56,16 @@ const OrderDetails: React.FC = () => {
     navigate("/orders");
   };
 
+  const viewhandler = (id: any) => {
+    navigate(`/details/${id}`);
+  };
+
   const { data: viewOrderData, isLoading, error } = useGetOrderByIdQuery(id);
   console.log(viewOrderData, "check");
 
   const Orderdata: DataType[] = viewOrderData?.data?.bundles?.map(
     (el: any, i: any) => {
+      console.log("111", viewOrderData?.data?.bundles);
       console.log(viewOrderData?.data?.bundles?.[0]?.bundleId, "Anhnnn");
       return {
         image: (
@@ -100,7 +105,7 @@ const OrderDetails: React.FC = () => {
       </div>
       <div className="bg-white">
         <div className="flex justify-between">
-          <div className="m-5">
+          <div className="m-5 text-black-2">
             <strong>
               <h2>Order ID: #{viewOrderData?.data?.bundles?.[0]?.orderId}</h2>
             </strong>
@@ -115,58 +120,124 @@ const OrderDetails: React.FC = () => {
             </h2>
           </div>
           <div className="m-5">
-            <a href="/demo.pdf" target="_blank" >
-            <Button className="bg-blue-800 text-white h-10">
-              VIEW INVOICE
-            </Button>
+            <a href="/demo.pdf" target="_blank">
+              <Button className="bg-blue-800 text-white h-10">
+                VIEW INVOICE
+              </Button>
             </a>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 m-10">
           <Card
             title={<h3>Customer</h3>}
             bordered={false}
-            style={{ width: 300, marginBottom: "1rem" }}
+            style={{ width: 350, marginBottom: "1rem" }}
           >
-            <p>Name: {viewOrderData?.data?.userId?.name}</p>
-            <p>Email: {viewOrderData?.data?.userId?.email}</p>
-            <p>User Id: {viewOrderData?.data?.userId?._id}</p>
-            <p>Contact No. : {viewOrderData?.data?.shippingAddress?.mobile}</p>
+            <div className="flex justify-between ">
+              <div className="h-11 w-11 rounded-full bg-slate-500 ">
+                <FontAwesomeIcon icon={faUser} size="xl" className="m-3" />
+              </div>
+              <div>
+                <p>
+                  Name: <strong>{viewOrderData?.data?.userId?.name}</strong>
+                </p>
+                <p>
+                  Email: <strong>{viewOrderData?.data?.userId?.email}</strong>
+                </p>
+                <p>
+                  User Id: <strong>{viewOrderData?.data?.userId?._id}</strong>
+                </p>
+                <p>
+                  Contact No. :{" "}
+                  <strong>
+                    {viewOrderData?.data?.shippingAddress?.mobile}
+                  </strong>
+                </p>
+              </div>
+            </div>
           </Card>
           <Card
             title={<h3>Payment Details</h3>}
             bordered={false}
-            style={{ width: 300, marginBottom: "1rem" }}
+            style={{ width: 350, marginBottom: "1rem" }}
           >
-            <p>Sub Total: {viewOrderData?.data?.total}</p>
-            <p>Shipping Charges: {viewOrderData?.data?.shippingCharges}</p>
-            <p>Tax: {viewOrderData?.data?.tax}</p>
-            <p>Total: {viewOrderData?.data?.grandTotal.toFixed(2)}</p>
-            <p>Payment Status: {viewOrderData?.data?.paymentStatus}</p>
+            <div className="flex justify-between ">
+              <div className="h-12 w-12 rounded-full bg-slate-500 ">
+                <FontAwesomeIcon icon={faCreditCard} size="xl" className="m-3" />
+              </div>
+              <div>
+                <p>
+                  Sub Total: <strong>{viewOrderData?.data?.total}</strong>
+                </p>
+                <p>
+                  Shipping Charges:{" "}
+                  <strong>{viewOrderData?.data?.shippingCharges}</strong>
+                </p>
+                <p>
+                  Tax: <strong>{viewOrderData?.data?.tax}</strong>
+                </p>
+                <p>
+                  Total:{" "}
+                  <strong>{viewOrderData?.data?.grandTotal.toFixed(2)}</strong>
+                </p>
+                <p>
+                  Payment Status:{" "}
+                  <strong>{viewOrderData?.data?.paymentStatus}</strong>
+                </p>
+              </div>
+            </div>
           </Card>
           <Card
             title={<h3>Shipping Details</h3>}
             bordered={false}
-            style={{ width: 300, marginBottom: "1rem" }}
+            style={{ width: 350, marginBottom: "1rem" }}
           >
-            <p>
-              Shipping Address: {viewOrderData?.data?.shippingAddress?.name},
-              {viewOrderData?.data?.shippingAddress?.address},{" "}
-              {viewOrderData?.data?.shippingAddress?.landmark},
-              {viewOrderData?.data?.shippingAddress?.pincode}
-            </p>
-            <p>Status: {viewOrderData?.data?.status}</p>
-            <p>
-              Shipping Status:{" "}
-              {viewOrderData?.data?.shippingStatus === "" && "N/A"}
-            </p>
+            <div className="flex justify-between ">
+              <div className="h-11 w-11 rounded-full bg-slate-500 mr-10 ">
+                <FontAwesomeIcon icon={faTruck} size="xl" className="m-3" />
+              </div>
+              <div>
+                <p>
+                  Shipping Address:{" "}
+                  <strong>
+                    {viewOrderData?.data?.shippingAddress?.name},
+                    {viewOrderData?.data?.shippingAddress?.address},{" "}
+                    {viewOrderData?.data?.shippingAddress?.landmark},
+                    {viewOrderData?.data?.shippingAddress?.pincode}
+                  </strong>
+                </p>
+                <p>
+                  Status: <strong>{viewOrderData?.data?.status}</strong>
+                </p>
+                <p>
+                  Shipping Status:{" "}
+                  <strong>
+                    {viewOrderData?.data?.shippingStatus === "" && "N/A"}
+                  </strong>
+                </p>
+              </div>
+            </div>
           </Card>
         </div>
       </div>
 
       <div className="border border-stroke rounded-lg cursor-pointer">
         <h1 className="text-3xl m-2 text-black-2 font-medium">Gift Bundles</h1>
-        <Table scroll={{ x: 1300 }} columns={columns} dataSource={Orderdata} />;
+        <Table
+          onRow={(record: DataType, index?: number) => {
+            console.log("record", record);
+            return {
+              onClick: () =>
+                viewhandler(
+                  viewOrderData?.data?.bundles[index ?? 0]?.bundleId?._id
+                ),
+            };
+          }}
+          scroll={{ x: 1300 }}
+          columns={columns}
+          dataSource={Orderdata}
+        />
+        ;
       </div>
     </>
   );

@@ -31,7 +31,7 @@ const GiftBundle = () => {
 
   const navigate = useNavigate();
 
-  const viewhandler = (id: any) => {
+   const viewhandler = (id: any) => {
     navigate(`/details/${id}`);
   };
 

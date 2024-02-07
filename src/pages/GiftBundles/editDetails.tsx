@@ -111,7 +111,11 @@ export const editDetails = () => {
   const tableData: DataType[] = editProducts?.data?.products?.map(
     (el: any, i: any) => ({
       key: el?._id,
-      image: <img src={el?.images[0]?.url} className="h-15" />,
+      image: (
+        <div className="w-13 h-13">
+          <img src={el?.images[0]?.url} className="h-15" />
+        </div>
+      ),
       name: el?.name,
       brand: el?.brand,
       description: el?.description,
@@ -163,11 +167,12 @@ export const editDetails = () => {
       fileType,
       privateImage: false,
     };
-    addSingleImage(dataToSend).then((res) =>{
-      const {fileUrl} = res?.data?.data;
-      console.log(fileUrl,"fileUrl")
-      setBundleData({ ...bundleData, image: fileUrl })
-    }
+    addSingleImage(dataToSend).then(
+      (res) => {
+        const { fileUrl } = res?.data?.data;
+        console.log(fileUrl, "fileUrl");
+        setBundleData({ ...bundleData, image: fileUrl });
+      }
       // setBundleData({ ...bundleData, image: res?.data?.fileUrl })
     );
   };
