@@ -22,6 +22,7 @@ export const orderApis = createApi({
         // createOrders: build.query({
         //     query: (id) => ({ url: `post/${id}` }),
         // }),
+        // `/users?page=${page}&limit=${limit}${name ? `&name=${name}` : ''}${email ? `&email=${email}` : ''}${socialId ? `&socialId=${socialId}` : ''}${isVerified ? `&isVerified=${isVerified}` : ''}`
     }),
 })
  

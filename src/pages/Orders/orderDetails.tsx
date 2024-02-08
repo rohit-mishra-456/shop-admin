@@ -2,7 +2,12 @@ import { Button, Card } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetOrderByIdQuery } from "../../queries/order";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faCreditCard, faTruck, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faCreditCard,
+  faTruck,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { Space, Table, Tag } from "antd";
 import type { TableProps } from "antd";
 
@@ -131,7 +136,7 @@ const OrderDetails: React.FC = () => {
           <Card
             title={<h3>Customer</h3>}
             bordered={false}
-            style={{ width: 350, marginBottom: "1rem" }}
+            style={{ width: 350, marginBottom: "1rem", lineHeight: 2 }}
           >
             <div className="flex justify-between ">
               <div className="h-11 w-11 rounded-full bg-slate-500 ">
@@ -159,11 +164,15 @@ const OrderDetails: React.FC = () => {
           <Card
             title={<h3>Payment Details</h3>}
             bordered={false}
-            style={{ width: 350, marginBottom: "1rem" }}
+            style={{ width: 350, marginBottom: "1rem", lineHeight: 2 }}
           >
             <div className="flex justify-between ">
               <div className="h-12 w-12 rounded-full bg-slate-500 ">
-                <FontAwesomeIcon icon={faCreditCard} size="xl" className="m-3" />
+                <FontAwesomeIcon
+                  icon={faCreditCard}
+                  size="xl"
+                  className="m-3"
+                />
               </div>
               <div>
                 <p>
@@ -190,7 +199,7 @@ const OrderDetails: React.FC = () => {
           <Card
             title={<h3>Shipping Details</h3>}
             bordered={false}
-            style={{ width: 350, marginBottom: "1rem" }}
+            style={{ width: 350, marginBottom: "1rem", lineHeight: 2 }}
           >
             <div className="flex justify-between ">
               <div className="h-11 w-11 rounded-full bg-slate-500 mr-10 ">
