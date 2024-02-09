@@ -1,6 +1,6 @@
 import { Input, Select, Table, Tooltip } from "antd";
 import type { TableColumnsType } from "antd";
-import { useGetOrdersQuery } from "../../queries/order";
+import { useGetOrdersMutation } from "../../queries/order";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBagShopping,
@@ -16,7 +16,7 @@ import {
   faClipboard,
 } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 
 interface DataType {
   key: React.Key;
@@ -78,15 +78,21 @@ const Orders: React.FC = () => {
     navigate(`/ordersdetails/${id}`);
   };
 
-  const [filterData, setFilterData] = useState({});
+  const [filteredData, setFilteredData] = useState({});
   const [key, setKey] = useState("Name");
+  // const [tableData, setTableData] = useState<DataType[]>();
 
+  const [getOrders, { data: ordersData, isLoading }] = useGetOrdersMutation();
 
-  const  { data: ordersData, isLoading } = useGetOrdersQuery("");
- 
-//  useEffect(() => {
-//   getOrders({...filterData}).then((res) => console.log(res,"res"))
-//  },[filterData])
+  useEffect(() => {
+    getOrders(filteredData);
+  }, [filteredData]);
+
+  const userData = useMemo(() => ordersData?.data?.orders, [ordersData])
+console.log('hnji', ordersData)
+  // useEffect(() => {
+  //   setTableData(generateTableData(ordersData?.data?.orders));
+  // }, [ordersData]);
 
   const handleChange = (value: string) => {
     setKey(value);
@@ -98,88 +104,102 @@ const Orders: React.FC = () => {
   //   return user?.name;
   // });
 
-
-  const searchHandler = (e) => {
+  //add debouncing
+  const searchHandler = ((e) => {
     let payload = {};
     payload = {
       ...payload,
-      [key]:  e.target.value
-    }
-   console.log(payload,"payyyy")
-   console.log('hnji2', payload.key)
-  //  setFilterData(data.filter((el) => (el?.key === payload?.key && el[key]?.toLowerCase().includes(payload)))
-  }
-
-  const data: DataType[] = ordersData?.data?.orders?.map((el: any, i: any) => {
-    const date = el?.bundlesDetails?.[0]?.updatedAt;
-    return {
-      key: i,
-      sno: ` ${i + 1}`,
-      image: (
-        <div className="w-13 h-13">
-          <img src={el?.bundlesDetails[0]?.image} />
-        </div>
-      ),
-      username: el?.user?.name,
-      email: el?.user?.email,
-      orderid: el?.orderItems?.[0]?.orderId,
-      orderdate:
-        new Date(date).getDate() +
-        "/" +
-        (new Date(date).getMonth() + 1) +
-        "/" +
-        new Date(date).getFullYear(),
-      status:
-        (el?.status === "placed" && (
-          <Tooltip title="placed">
-            <FontAwesomeIcon icon={faBagShopping} size="xl" />
-          </Tooltip>
-        )) ||
-        (el?.status === "cancel-requested" && (
-          <Tooltip title="cancel-requested">
-            <FontAwesomeIcon icon={faCircleXmark} size="xl" />
-          </Tooltip>
-        )) ||
-        (el?.status === "pending" && (
-          <Tooltip title="pending">
-            <FontAwesomeIcon icon={faClipboard} size="xl" />
-          </Tooltip>
-        )) ||
-        (el?.status === "shipped" && (
-          <Tooltip title="shipped">
-            <FontAwesomeIcon icon={faTruck} size="xl" />
-          </Tooltip>
-        )) ||
-        (el?.status === "processed" && (
-          <Tooltip title="processed">
-            <FontAwesomeIcon icon={faRotate} size="xl" />
-          </Tooltip>
-        )) ||
-        (el?.status === "cancelled" && (
-          <Tooltip title="cancelled">
-            <FontAwesomeIcon icon={faRectangleXmark} size="xl" />
-          </Tooltip>
-        )) ||
-        (el?.status === "delivered" && (
-          <Tooltip title="delivered">
-            <FontAwesomeIcon icon={faSquareCheck} size="xl" />
-          </Tooltip>
-        )),
-      total: el?.grandTotal.toFixed(2),
-      action: (
-        <div className="flex gap-3 cursor-pointer">
-          <FontAwesomeIcon icon={faEye} onClick={() => viewOrder(el._id)} />
-          <FontAwesomeIcon
-            icon={faPen}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          />
-        </div>
-      ),
+      [key]: e.target.value,
     };
+    console.log(payload, "payyyy");
+    setFilteredData(payload);
+    console.log(filteredData, "filterdata");
+    // const filterData = ordersData?.data?.orders?.filter((el) => {
+    //   console.log(el, "rrrr");
+    //   return el?.user?.name
+    //     ?.toLowerCase()
+    //     .includes(e.target.value.toLowerCase());
+    // });
+    // setTableData(generateTableData(filterData));
+    // console.log(filterData);
+    //  setFilterData(data.filter((el) => (el?.key === payload?.key && el[key]?.toLowerCase().includes(payload)))
   });
-console.log('hnji', data);
+  // ordersData?.data?.orders?.
+  // const generateTableData = useCallback((ordersData: DataType[]) => {
+    // const data: DataType[] = ordersData?.data?.orders?.map((el: any, i: any) => {
+    const data: DataType[] = userData?.map((el: any, i: any) => {
+      const date = el?.bundlesDetails?.[0]?.updatedAt;
+      return {
+        key: i,
+        sno: ` ${i + 1}`,
+        image: (
+          <div className="w-13 h-13">
+            <img src={el?.bundlesDetails[0]?.image} />
+          </div>
+        ),
+        username: el?.user?.name,
+        email: el?.user?.email,
+        orderid: el?.orderItems?.[0]?.orderId,
+        orderdate:
+          new Date(date).getDate() +
+          "/" +
+          (new Date(date).getMonth() + 1) +
+          "/" +
+          new Date(date).getFullYear(),
+        status:
+          (el?.status === "placed" && (
+            <Tooltip title="placed">
+              <FontAwesomeIcon icon={faBagShopping} size="xl" />
+            </Tooltip>
+          )) ||
+          (el?.status === "cancel-requested" && (
+            <Tooltip title="cancel-requested">
+              <FontAwesomeIcon icon={faCircleXmark} size="xl" />
+            </Tooltip>
+          )) ||
+          (el?.status === "pending" && (
+            <Tooltip title="pending">
+              <FontAwesomeIcon icon={faClipboard} size="xl" />
+            </Tooltip>
+          )) ||
+          (el?.status === "shipped" && (
+            <Tooltip title="shipped">
+              <FontAwesomeIcon icon={faTruck} size="xl" />
+            </Tooltip>
+          )) ||
+          (el?.status === "processed" && (
+            <Tooltip title="processed">
+              <FontAwesomeIcon icon={faRotate} size="xl" />
+            </Tooltip>
+          )) ||
+          (el?.status === "cancelled" && (
+            <Tooltip title="cancelled">
+              <FontAwesomeIcon icon={faRectangleXmark} size="xl" />
+            </Tooltip>
+          )) ||
+          (el?.status === "delivered" && (
+            <Tooltip title="delivered">
+              <FontAwesomeIcon icon={faSquareCheck} size="xl" />
+            </Tooltip>
+          )),
+        total: el?.grandTotal.toFixed(2),
+        action: (
+          <div className="flex gap-3 cursor-pointer">
+            <FontAwesomeIcon icon={faEye} onClick={() => viewOrder(el._id)} />
+            <FontAwesomeIcon
+              icon={faPen}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          </div>
+        ),
+      };
+    });
+  //   return data;
+  // }, []
+  // );
+  // console.log('hnji', data);
 
   if (isLoading) {
     return <>Loading...</>;
@@ -210,7 +230,11 @@ console.log('hnji', data);
             />
           </div>
           <div className="w-full h-full  ">
-            <Input placeholder="Search" className="w-full h-full" onChange={searchHandler} />
+            <Input
+              placeholder="Search"
+              className="w-full h-full"
+              onChange={searchHandler}
+            />
           </div>
 
           <div className=" h-full">

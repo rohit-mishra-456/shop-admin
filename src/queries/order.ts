@@ -6,11 +6,11 @@ export const orderApis = createApi({
     reducerPath: 'order',
     baseQuery: baseQueryInstance,
     endpoints: (build) => ({
-        getOrders: build.query({
-            query: () => ({ url: `orders?page=1&limit=100` }),
+        getOrders: build.mutation({
+            query: ({Name, email, orderId}) => ({ url: `orders?page=1&limit=100 ${Name ? `&name=${Name}` : ''}${email ? `&email=${email}` : ''} ${orderId ? `&orderId=${orderId}` : ''}` }),
         }),
 
-        getOrderById: build.query({
+        getOrderById: build.query({ 
             query: (id) => ({ url: `orders/${id}` }),
         }),
         // updateOrder: build.mutation({
@@ -27,6 +27,6 @@ export const orderApis = createApi({
 })
  
 export const {
-    useGetOrdersQuery,
+    useGetOrdersMutation,
     useGetOrderByIdQuery,
 } = orderApis;

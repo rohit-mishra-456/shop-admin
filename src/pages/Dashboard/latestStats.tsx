@@ -2,8 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { Lists } from "../../customComponents/lists.tsx";
 import { useGetGiftBundlesQuery } from "../../queries/giftBundle.ts";
 import { useGetGiftIdeasQuery } from "../../queries/giftIdeas.ts";
-import { useGetOrdersQuery } from "../../queries/order.ts";
+import { useGetOrdersMutation } from "../../queries/order.ts";
 import { useGetUsersQuery } from "../../queries/users.ts";
+import { useEffect } from "react";
 
 export const LatestStats = () => {
   const {
@@ -13,12 +14,14 @@ export const LatestStats = () => {
   } = useGetGiftBundlesQuery(null);
 
   // console.log(giftBundlesData, "to kaise hai aap log")
+  useEffect(() => {
+    getOrders("");
+  }, []);
 
-  const {
-    data: ordersData,
-    isLoading: loadingOrder,
-    error: errorOrder,
-  } = useGetOrdersQuery(null);
+  const [
+    getOrders,
+    { data: ordersData, isLoading: loadingOrder, error: errorOrder },
+  ] = useGetOrdersMutation();
 
   const {
     data: userData,
