@@ -7,9 +7,9 @@ export const orderApis = createApi({
     baseQuery: baseQueryInstance,
     endpoints: (build) => ({
         getOrders: build.mutation({
-            query: ({Name, email, orderId}) => ({ url: `orders?page=1&limit=100 ${Name ? `&name=${Name}` : ''}${email ? `&email=${email}` : ''} ${orderId ? `&orderId=${orderId}` : ''}` }),
+            query: ({Name, Email, OrderId, status}) => ({ url: `orders?page=1&limit=100 ${Name ? `&name=${Name}` : ''}${Email ? `&email=${Email}` : ''} ${OrderId ? `&orderId=${OrderId}` : ''} ${status ? `&status=${status}` : ''}` }),
         }),
-
+        
         getOrderById: build.query({ 
             query: (id) => ({ url: `orders/${id}` }),
         }),
