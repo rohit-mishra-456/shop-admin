@@ -199,13 +199,11 @@ export const editDetails = () => {
   return (
     <>
       <div className="">
-        <Button className=" bg-[#3C50E0] w-12 h-12 rounded-full">
-          <FontAwesomeIcon
-            size="xl"
-            color="white"
-            icon={faArrowLeft}
-            onClick={backNavigate}
-          />
+        <Button
+          className=" bg-[#3C50E0] w-12 h-12 rounded-full"
+          onClick={backNavigate}
+        >
+          <FontAwesomeIcon size="xl" color="white" icon={faArrowLeft} />
         </Button>
       </div>
       <div className="mt-5 mb-5">

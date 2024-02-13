@@ -1,4 +1,4 @@
-import { Input, Select, Table, Tooltip } from "antd";
+import { Input, Popover, Select, Table, Tooltip } from "antd";
 import type { TableColumnsType } from "antd";
 import { useGetOrdersMutation } from "../../queries/order";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -81,7 +81,7 @@ const Orders: React.FC = () => {
 
   const [filteredData, setFilteredData] = useState({});
   const [key, setKey] = useState("Name");
-  const [status, setStatus] = useState("All Status");
+  const [status, setStatus] = useState("");
   // const [tableData, setTableData] = useState<DataType[]>();
 
   const [getOrders, { data: ordersData }] = useGetOrdersMutation();
@@ -104,7 +104,6 @@ const Orders: React.FC = () => {
 
   let payload = {};
   const statusChange = useCallback((value: string) => {
-    console.log("vv", value);
     setStatus(value);
     payload = {
       ...payload,
@@ -125,11 +124,11 @@ const Orders: React.FC = () => {
     payload = {
       ...payload,
       [key]: e.target.value,
-      [status]: status,
+      status: status,
+      
     };
 
     console.log(payload, "payyyy");
-
     setFilteredData(payload);
     console.log(filteredData, "filterdata");
 
@@ -146,6 +145,15 @@ const Orders: React.FC = () => {
   // ordersData?.data?.orders?.
   // const generateTableData = useCallback((ordersData: DataType[]) => {
   // const data: DataType[] = ordersData?.data?.orders?.map((el: any, i: any) => {
+
+  const [open, setOpen] = useState(false);
+
+  const [popoverOpen, setPopoverOpen] = useState(null);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+  };
+
   const data: DataType[] = userData?.map((el: any, i: any) => {
     const date = el?.bundlesDetails?.[0]?.updatedAt;
     return {
@@ -209,12 +217,23 @@ const Orders: React.FC = () => {
           {el?.status === "placed" ||
           el?.status === "shipped" ||
           el?.status === "processed" ? (
-            <FontAwesomeIcon
-              icon={faPen}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            />
+            <Popover
+              title="Update Order Status"
+              trigger="click"
+              open={open && popoverOpen === el._id}
+              onOpenChange={handleOpenChange}
+            >
+              {/* here */}
+              <Tooltip title="Update Order Status">
+              <FontAwesomeIcon
+                icon={faPen}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPopoverOpen(el._id);
+                }}
+              />
+              </Tooltip>
+             </Popover>
           ) : (
             <Tooltip title="can't update order status">
               <FontAwesomeIcon
@@ -255,7 +274,7 @@ const Orders: React.FC = () => {
             style={{ width: 100, height: 60 }}
             onChange={handleChange}
             options={[
-              { value: "N13ame", label: "Name" },
+              { value: "Name", label: "Name" },
               { value: "Email", label: "Email" },
               { value: "OrderID", label: "Order ID" },
             ]}
