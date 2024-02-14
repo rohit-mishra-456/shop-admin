@@ -1,6 +1,9 @@
 import { Input, Popover, Select, Table, Tooltip } from "antd";
 import type { TableColumnsType } from "antd";
-import { useGetOrdersMutation } from "../../queries/order";
+import {
+  useGetOrdersMutation,
+  useUpdateOrderMutation,
+} from "../../queries/order";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBagShopping,
@@ -10,6 +13,8 @@ import {
   faSquareCheck,
   faTruck,
   faRectangleXmark,
+  faCircleCheck,
+  faClockRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faCircleXmark,
@@ -17,7 +22,6 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { icon } from "@fortawesome/fontawesome-svg-core";
 
 interface DataType {
   key: React.Key;
@@ -86,6 +90,26 @@ const Orders: React.FC = () => {
 
   const [getOrders, { data: ordersData }] = useGetOrdersMutation();
 
+  const [updateOrders] = useUpdateOrderMutation();
+
+  const [changeStatus, setChangeStatus] = useState("");
+
+  const updateStatusHandler = (id: any) => {
+    let payload = {};
+    payload = {
+      ...payload,
+      id,
+      status: changeStatus,
+    };
+    console.log(payload,"iiiiiiiiiii")
+    updateOrders(payload).then((res) => console.log(res,"response"));
+  };
+
+  // useEffect(() => {
+  //   console.log("filterr", filteredData);
+  //   updateOrders(filteredData);
+  // }, [filteredData]);
+
   useEffect(() => {
     console.log("filterr", filteredData);
     getOrders(filteredData);
@@ -125,7 +149,6 @@ const Orders: React.FC = () => {
       ...payload,
       [key]: e.target.value,
       status: status,
-      
     };
 
     console.log(payload, "payyyy");
@@ -208,6 +231,11 @@ const Orders: React.FC = () => {
           <Tooltip title="delivered">
             <FontAwesomeIcon icon={faSquareCheck} size="xl" />
           </Tooltip>
+        ))||
+        (el?.status === "preparing" && (
+          <Tooltip title="preparing">
+            <FontAwesomeIcon icon={faClockRotateLeft} size="xl" />
+          </Tooltip>
         )),
       total: el?.grandTotal.toFixed(2),
       action: (
@@ -216,8 +244,67 @@ const Orders: React.FC = () => {
 
           {el?.status === "placed" ||
           el?.status === "shipped" ||
+          el?.status === "preparing" ||
           el?.status === "processed" ? (
             <Popover
+              content={
+                <ul
+                  className="mt-5"
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <li
+                    className="flex justify-between mb-2"
+                  >
+                    <div className="flex w-10 gap-2">
+                      <FontAwesomeIcon
+                        icon={faBagShopping}
+                        className="mt-0.5"
+                      />
+                      <h3>Placed</h3>
+                    </div>
+                    <FontAwesomeIcon icon={faCircleCheck} className="mt-0.5" />
+                  </li>
+                  <li className="flex justify-between mb-2" onClick={() => {
+                    setChangeStatus("processed");
+                    updateStatusHandler(el?._id);
+                  }}>
+                    <div className="flex w-10 gap-2">
+                      <FontAwesomeIcon icon={faRotate} className="mt-0.5" />
+                      <h3>Processed</h3>
+                    </div>
+                    <FontAwesomeIcon icon={faCircleCheck} className="mt-0.5" />
+                  </li>
+                  <li className="flex justify-between mb-2">
+                    <div className="flex w-10 gap-2">
+                      <FontAwesomeIcon icon={faTruck} className="mt-0.5" />
+                      <h3>Shipped</h3>
+                    </div>
+                    <FontAwesomeIcon icon={faCircleCheck} className="mt-0.5" />
+                  </li>
+                  <li className="flex justify-between mb-2">
+                    <div className="flex w-10 gap-2">
+                      <FontAwesomeIcon
+                        icon={faSquareCheck}
+                        className="mt-0.5"
+                      />
+                      <h3>Delivered</h3>
+                    </div>
+                    <FontAwesomeIcon icon={faCircleCheck} className="mt-0.5" />
+                  </li>
+                  <li className="flex justify-between mb-2">
+                    <div className="flex w-10 gap-2">
+                      <FontAwesomeIcon
+                        icon={faRectangleXmark}
+                        className="mt-0.5"
+                      />
+                      <h3>Cancelled</h3>
+                    </div>
+                    <FontAwesomeIcon icon={faCircleCheck} className="mt-0.5" />
+                  </li>
+                </ul>
+              }
               title="Update Order Status"
               trigger="click"
               open={open && popoverOpen === el._id}
@@ -225,15 +312,15 @@ const Orders: React.FC = () => {
             >
               {/* here */}
               <Tooltip title="Update Order Status">
-              <FontAwesomeIcon
-                icon={faPen}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setPopoverOpen(el._id);
-                }}
-              />
+                <FontAwesomeIcon
+                  icon={faPen}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPopoverOpen(el._id);
+                  }}
+                />
               </Tooltip>
-             </Popover>
+            </Popover>
           ) : (
             <Tooltip title="can't update order status">
               <FontAwesomeIcon
