@@ -1,4 +1,4 @@
-import { Input, Popover, Select, Table, Tooltip } from "antd";
+import { Input, Pagination, Popover, Select, Table, Tooltip } from "antd";
 import type { TableColumnsType } from "antd";
 import {
   useGetOrdersMutation,
@@ -77,6 +77,8 @@ const columns: TableColumnsType<DataType> = [
 ];
 
 const Orders: React.FC = () => {
+  ``;
+
   // orders api
   const navigate = useNavigate();
   const viewOrder = (id: any) => {
@@ -86,29 +88,21 @@ const Orders: React.FC = () => {
   const [filteredData, setFilteredData] = useState({});
   const [key, setKey] = useState("Name");
   const [status, setStatus] = useState("");
-  // const [tableData, setTableData] = useState<DataType[]>();
 
   const [getOrders, { data: ordersData }] = useGetOrdersMutation();
 
   const [updateOrders] = useUpdateOrderMutation();
 
-  const [changeStatus, setChangeStatus] = useState("");
-
-  const updateStatusHandler = (id: any) => {
+  const updateStatusHandler = (id: any, val: string) => {
     let payload = {};
     payload = {
       ...payload,
       id,
-      status: changeStatus,
+      status: val,
     };
-    console.log(payload,"iiiiiiiiiii")
-    updateOrders(payload).then((res) => console.log(res,"response"));
+    console.log(payload, "iiiiiiiiiii");
+    updateOrders(payload).then((res) => console.log(res, "response"));
   };
-
-  // useEffect(() => {
-  //   console.log("filterr", filteredData);
-  //   updateOrders(filteredData);
-  // }, [filteredData]);
 
   useEffect(() => {
     console.log("filterr", filteredData);
@@ -117,9 +111,6 @@ const Orders: React.FC = () => {
 
   const userData = useMemo(() => ordersData?.data?.orders, [ordersData]);
   console.log("hnji", ordersData);
-  // useEffect(() => {
-  //   setTableData(generateTableData(ordersData?.data?.orders));
-  // }, [ordersData]);
 
   const handleChange = useCallback((value: string) => {
     setKey(value);
@@ -133,14 +124,8 @@ const Orders: React.FC = () => {
       ...payload,
       status: value,
     };
-    // setStatus(value);
     setFilteredData(payload);
   }, []);
-
-  // const filterItem = ordersData?.data?.orders?.filter((user: any) => {
-  //   console.log(user,"test rohit");
-  //   return user?.name;
-  // });
 
   //add debouncing
   const searchHandler = (e: any) => {
@@ -150,24 +135,44 @@ const Orders: React.FC = () => {
       [key]: e.target.value,
       status: status,
     };
-
     console.log(payload, "payyyy");
     setFilteredData(payload);
     console.log(filteredData, "filterdata");
-
-    // const filterData = ordersData?.data?.orders?.filter((el) => {
-    //   console.log(el, "rrrr");
-    //   return el?.user?.name
-    //     ?.toLowerCase()
-    //     .includes(e.target.value.toLowerCase());
-    // });
-    // setTableData(generateTableData(filterData));
-    // console.log(filterData);
-    //  setFilterData(data.filter((el) => (el?.key === payload?.key && el[key]?.toLowerCase().includes(payload)))
   };
-  // ordersData?.data?.orders?.
-  // const generateTableData = useCallback((ordersData: DataType[]) => {
-  // const data: DataType[] = ordersData?.data?.orders?.map((el: any, i: any) => {
+
+  // pagination code started here
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const PAGE_SIZE = 10;
+
+  useEffect(() => {
+    getOrders({ page: currentPage, limit: PAGE_SIZE });
+    navigate(`/orders?p=${currentPage}`);
+  }, [currentPage])
+
+  const handlePageChange = (pagination: any) => {
+    console.log('paginationn', pagination)
+    setCurrentPage(pagination.current);
+  }
+
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [pageSize, setPageSize] = useState(10);
+
+  // useEffect(() => {
+  //   getOrders({ page: currentPage, limit: pageSize });
+  //   navigate(`/orders?p=${currentPage}`);
+  // }, [currentPage, pageSize]);
+
+  // const handlePageChange = (pagination: any) => {
+  //   console.log("pagination", pagination);
+  //   setCurrentPage(pagination.current);
+  //   setPageSize(pagination.limit);
+  // };
+
+  // pagination code end
+
+  // edit popup
 
   const [open, setOpen] = useState(false);
 
@@ -231,7 +236,7 @@ const Orders: React.FC = () => {
           <Tooltip title="delivered">
             <FontAwesomeIcon icon={faSquareCheck} size="xl" />
           </Tooltip>
-        ))||
+        )) ||
         (el?.status === "preparing" && (
           <Tooltip title="preparing">
             <FontAwesomeIcon icon={faClockRotateLeft} size="xl" />
@@ -254,9 +259,7 @@ const Orders: React.FC = () => {
                     e.stopPropagation();
                   }}
                 >
-                  <li
-                    className="flex justify-between mb-2"
-                  >
+                  <li className="flex justify-between mb-2">
                     <div className="flex w-10 gap-2">
                       <FontAwesomeIcon
                         icon={faBagShopping}
@@ -266,24 +269,36 @@ const Orders: React.FC = () => {
                     </div>
                     <FontAwesomeIcon icon={faCircleCheck} className="mt-0.5" />
                   </li>
-                  <li className="flex justify-between mb-2" onClick={() => {
-                    setChangeStatus("processed");
-                    updateStatusHandler(el?._id);
-                  }}>
+                  <li
+                    className="flex justify-between mb-2"
+                    onClick={() => {
+                      updateStatusHandler(el?._id, "processed");
+                    }}
+                  >
                     <div className="flex w-10 gap-2">
                       <FontAwesomeIcon icon={faRotate} className="mt-0.5" />
                       <h3>Processed</h3>
                     </div>
                     <FontAwesomeIcon icon={faCircleCheck} className="mt-0.5" />
                   </li>
-                  <li className="flex justify-between mb-2">
+                  <li
+                    className="flex justify-between mb-2"
+                    onClick={() => {
+                      updateStatusHandler(el?._id, "shipped");
+                    }}
+                  >
                     <div className="flex w-10 gap-2">
                       <FontAwesomeIcon icon={faTruck} className="mt-0.5" />
                       <h3>Shipped</h3>
                     </div>
                     <FontAwesomeIcon icon={faCircleCheck} className="mt-0.5" />
                   </li>
-                  <li className="flex justify-between mb-2">
+                  <li
+                    className="flex justify-between mb-2"
+                    onClick={() => {
+                      updateStatusHandler(el?._id, "delivered");
+                    }}
+                  >
                     <div className="flex w-10 gap-2">
                       <FontAwesomeIcon
                         icon={faSquareCheck}
@@ -293,7 +308,12 @@ const Orders: React.FC = () => {
                     </div>
                     <FontAwesomeIcon icon={faCircleCheck} className="mt-0.5" />
                   </li>
-                  <li className="flex justify-between mb-2">
+                  <li
+                    className="flex justify-between mb-2"
+                    onClick={() => {
+                      updateStatusHandler(el?._id, "cancelled");
+                    }}
+                  >
                     <div className="flex w-10 gap-2">
                       <FontAwesomeIcon
                         icon={faRectangleXmark}
@@ -336,14 +356,7 @@ const Orders: React.FC = () => {
       ),
     };
   });
-  //   return data;
-  // }, []
-  // );
-  // console.log('hnji', data);
 
-  // if (isLoading) {
-  //   return <>Loading...</>;
-  // } else
   return (
     <div>
       <div>
@@ -401,7 +414,8 @@ const Orders: React.FC = () => {
               onClick: () => viewOrder(record?.orderid),
             };
           }}
-          pagination={{ defaultPageSize: 10 }}
+          // pagination={{ defaultPageSize: 5 }}
+          onChange={handlePageChange}
           scroll={{ x: 1300 }}
           columns={columns}
           dataSource={data}

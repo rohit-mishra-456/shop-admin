@@ -6,14 +6,14 @@ export const orderApis = createApi({
   baseQuery: baseQueryInstance,
   endpoints: (build) => ({
     getOrders: build.mutation({
-      query: ({ Name, Email, OrderID, status }) => {
-        console.log("rohit", status);
+      query: ({ Name, Email, OrderID, status, page, limit }) => {
+        console.log("rohitmishra", page);
         return {
-          url: `orders?page=1&limit=100${Name ? `&name=${Name}` : ""}${
+          url: `orders?${Name ? `&name=${Name}` : ""}${
             Email ? `&email=${Email}` : ""
           }${OrderID ? `&orderId=${OrderID}` : ""}${
             status ? `&status=${status}` : ""
-          }`,
+          }${page ? `&page=${page}` : ""}${limit ? `&limit=${limit}` : ""}`,
         };
       },
     }),
@@ -41,4 +41,8 @@ export const orderApis = createApi({
   }),
 });
 
-export const { useGetOrdersMutation, useGetOrderByIdQuery, useUpdateOrderMutation } = orderApis;
+export const {
+  useGetOrdersMutation,
+  useGetOrderByIdQuery,
+  useUpdateOrderMutation,
+} = orderApis;
