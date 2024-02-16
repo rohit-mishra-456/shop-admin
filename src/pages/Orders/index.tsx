@@ -144,31 +144,18 @@ const Orders: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
+
   const PAGE_SIZE = 10;
 
   useEffect(() => {
-    getOrders({ page: currentPage, limit: PAGE_SIZE });
+    getOrders({ ...filteredData, page: currentPage, limit: PAGE_SIZE });
     navigate(`/orders?p=${currentPage}`);
-  }, [currentPage])
+  }, [filteredData,currentPage]);
 
-  const handlePageChange = (pagination: any) => {
-    console.log('paginationn', pagination)
-    setCurrentPage(pagination.current);
-  }
-
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [pageSize, setPageSize] = useState(10);
-
-  // useEffect(() => {
-  //   getOrders({ page: currentPage, limit: pageSize });
-  //   navigate(`/orders?p=${currentPage}`);
-  // }, [currentPage, pageSize]);
-
-  // const handlePageChange = (pagination: any) => {
-  //   console.log("pagination", pagination);
-  //   setCurrentPage(pagination.current);
-  //   setPageSize(pagination.limit);
-  // };
+  const handlePageChange = (Pagination: any) => {
+    console.log("paginationn", Pagination);
+    setCurrentPage(Pagination);
+  };
 
   // pagination code end
 
@@ -186,7 +173,7 @@ const Orders: React.FC = () => {
     const date = el?.bundlesDetails?.[0]?.updatedAt;
     return {
       key: i,
-      sno: ` ${i + 1}`,
+      sno: ` ${(currentPage - 1) * PAGE_SIZE + i + 1}`,
       image: (
         <div className="w-13 h-13">
           <img src={el?.bundlesDetails[0]?.image} />
@@ -361,7 +348,7 @@ const Orders: React.FC = () => {
     <div>
       <div>
         <h2 className="text-black text-3xl font-semibold">All Orders</h2>
-        <p className="mt-4">Total orders: {ordersData?.data?.orders?.length}</p>
+        <p className="mt-4">Total orders: {ordersData?.data?.totalOrders}</p>
       </div>
       <div style={{ marginBottom: 16 }}>
         <span style={{ marginLeft: 8 }}></span>
@@ -414,12 +401,19 @@ const Orders: React.FC = () => {
               onClick: () => viewOrder(record?.orderid),
             };
           }}
-          // pagination={{ defaultPageSize: 5 }}
-          onChange={handlePageChange}
           scroll={{ x: 1300 }}
           columns={columns}
           dataSource={data}
+          pagination={false}
         />
+        <div className="flex justify-end mr-15 mt-2 mb-3">
+          <Pagination
+            current={currentPage}
+            total={ordersData?.data?.totalOrders}
+            pageSize={PAGE_SIZE}
+            onChange={handlePageChange}
+          />
+        </div>
       </div>
     </div>
   );

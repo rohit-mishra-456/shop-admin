@@ -13,7 +13,6 @@ export const LatestStats = () => {
     error: errorBundle,
   } = useGetGiftBundlesQuery(null);
 
-  // console.log(giftBundlesData, "to kaise hai aap log")
   useEffect(() => {
     getOrders("");
   }, []);
