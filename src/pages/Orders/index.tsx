@@ -23,6 +23,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo, useCallback } from "react";
 
+import debounce from 'lodash.debounce'
+
 interface DataType {
   key: React.Key;
   sno: string;
@@ -127,7 +129,7 @@ const Orders: React.FC = () => {
     setFilteredData(payload);
   }, []);
 
-  //add debouncing
+  // debouncedSearchHandler(e);
   const searchHandler = (e: any) => {
     // let payload = {};
     payload = {
@@ -136,10 +138,20 @@ const Orders: React.FC = () => {
       status: status,
     };
     console.log(payload, "payyyy");
-    setFilteredData(payload);
-    console.log(filteredData, "filterdata");
-  };
+    const debouncedSearchHandler =  debounce(()=> {
 
+      setFilteredData(payload);
+      console.log(filteredData, "filterdata");
+    }, 1000);
+    debouncedSearchHandler()
+  };
+  
+  //add debouncing
+  // const debouncedSearchHandler = debounce(searchHandler,3000);
+
+  // const debounceChange = () => {
+  //   debouncedSearchHandler();
+  // }
   // pagination code started here
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -359,7 +371,7 @@ const Orders: React.FC = () => {
           <Select
             defaultValue={key}
             style={{ width: 100, height: 60 }}
-            onChange={handleChange}
+            onChange={ handleChange}
             options={[
               { value: "Name", label: "Name" },
               { value: "Email", label: "Email" },
@@ -384,11 +396,15 @@ const Orders: React.FC = () => {
               { value: "", label: "All Status" },
               { value: "pending", label: "Pending" },
               { value: "placed", label: "Placed" },
+              { value: "preparing", label: "Preparing" },
               { value: "processed", label: "Processed" },
               { value: "shipped", label: "Shipped" },
+              { value: "in-transit", label: "In Transit" },
               { value: "delivered", label: "Delivered" },
               { value: "cancelled", label: "Cancelled" },
+              { value: "return-requested", label: "Return Requested" },
               { value: "cancel-requested", label: "Cancel Requested" },
+              { value: "refund-processing", label: "Refund Processing" },
             ]}
           />
         </div>
